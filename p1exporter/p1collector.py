@@ -1,16 +1,11 @@
 """ TODO """
-import time
 from typing import Mapping
-from unittest.mock import patch
-from prometheus_client import start_http_server
+
 from prometheus_client.core import (
     InfoMetricFamily,
     GaugeMetricFamily,
     CounterMetricFamily,
-    REGISTRY,
 )
-
-from p1reader import CRCException, P1Reader
 
 # TODO
 # - logger
@@ -129,23 +124,3 @@ class P1Collector:
                     self._prometheus_metrics[code].add_metric(labels=[], value=value)
             else:
                 print(f"Collector does not know about {code}.")
-
-
-if __name__ == "__main__":
-    # with Serial(port="/dev/ttyUSB0", baudrate=115200, xonxoff=1, timeout=1.0) as serial:
-    collector = P1Collector()
-    REGISTRY.register(collector)
-    start_http_server(8080)
-    with open("sample/fulllist.txt", "rb") as file:
-        with patch("p1reader.Serial") as mock_serial:
-            mock_serial.return_value.readline = file.readline
-            with P1Reader() as p1_reader:
-                while True:
-                    try:
-                        telegram = p1_reader.read()
-                    except CRCException as error:
-                        print(f"Error {error}")
-
-                    print(telegram)
-                    collector.update(telegram)
-                    time.sleep(10)

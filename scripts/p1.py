@@ -1,0 +1,32 @@
+""" p1exporter CLI"""
+
+from p1exporter import P1Reader, P1Collector, CRCException
+
+from prometheus_client import start_http_server
+from prometheus_client.core import REGISTRY
+
+from unittest.mock import patch
+import time
+import logging
+from logging import NullHandler
+
+logging.getLogger(__name__).addHandler(NullHandler())
+
+if __name__ == "__main__":
+    # with Serial(port="/dev/ttyUSB0", baudrate=115200, xonxoff=1, timeout=1.0) as serial:
+    collector = P1Collector()
+    REGISTRY.register(collector)
+    start_http_server(8080)
+    with open("../sample/fulllist.txt", "rb") as file:
+        with patch("p1exporter.p1reader.Serial") as mock_serial:
+            mock_serial.return_value.readline = file.readline
+            with P1Reader() as p1_reader:
+                while True:
+                    try:
+                        telegram = p1_reader.read()
+                    except CRCException as error:
+                        print(f"Error {error}")
+
+                    print(telegram)
+                    collector.update(telegram)
+                    time.sleep(10)
