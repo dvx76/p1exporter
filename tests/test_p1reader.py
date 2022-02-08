@@ -3,13 +3,13 @@ from unittest.mock import patch, MagicMock
 
 import pytest
 
-from p1reader import CRCException, P1Reader
+from p1exporter import CRCException, P1Reader
 
 
 @pytest.fixture(name="mock_serial")
 def create_mock_serial() -> MagicMock:
     """Mock the Serial class used in P1Exporter"""
-    with patch("p1reader.Serial") as mock:
+    with patch("p1exporter.p1reader.Serial") as mock:
         yield mock
 
 

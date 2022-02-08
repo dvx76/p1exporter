@@ -1,5 +1,4 @@
 """ p1exporter CLI"""
-
 from p1exporter import P1Reader, P1Collector, CRCException
 
 from prometheus_client import start_http_server
@@ -17,7 +16,7 @@ if __name__ == "__main__":
     collector = P1Collector()
     REGISTRY.register(collector)
     start_http_server(8080)
-    with open("../sample/fulllist.txt", "rb") as file:
+    with open("sample/fulllist.txt", "rb") as file:
         with patch("p1exporter.p1reader.Serial") as mock_serial:
             mock_serial.return_value.readline = file.readline
             with P1Reader() as p1_reader:
