@@ -4,12 +4,14 @@ from p1exporter import P1Reader, P1Collector, CRCException
 from prometheus_client import start_http_server
 from prometheus_client.core import REGISTRY
 
-from unittest.mock import patch
-import time
 import logging
-from logging import NullHandler
 
-logging.getLogger(__name__).addHandler(NullHandler())
+logging.basicConfig(
+    format="ts=%(asctime)s level=%(levelname)s caller=%(name)s msg=%(message)s",
+    datefmt="%Y-%m-%dT%H:%M:%S",
+    level=logging.INFO,
+)
+logger = logging.getLogger(__name__)
 
 # TODO
 # - parametrize port and USB device
@@ -23,7 +25,7 @@ if __name__ == "__main__":
             try:
                 telegram = p1_reader.read()
             except CRCException as error:
-                print(f"Error {error}")
+                logger.warning(error)
 
-            print(telegram)
+            logger.info(f"Got telegram with {len(telegram)} keys")
             collector.update(telegram)

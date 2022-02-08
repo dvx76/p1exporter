@@ -7,7 +7,7 @@ from serial import Serial
 
 crc16 = mkPredefinedCrcFun("crc16")
 
-log = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class CRCException(Exception):
@@ -51,7 +51,7 @@ class P1Reader:
                 break
             telegram += line
 
-        print(f"telegram is {telegram}")
+        logger.debug(f"telegram is {telegram}")
         checksum_calculated = crc16(telegram + b"!")
         checksum_expected = int("0x" + line.decode("utf-8")[1:], 16)
         if checksum_calculated != checksum_expected:
@@ -80,7 +80,7 @@ class P1Reader:
             value: str = ""
             split_line = line.split("(")
             if len(split_line) == 1:
-                print(f"Skipping line: {line}")
+                logger.debug(f"Skipping line: {line}")
             code = split_line[0]
 
             try:
