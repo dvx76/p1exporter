@@ -24,9 +24,9 @@ if __name__ == "__main__":
                 while True:
                     try:
                         telegram = p1_reader.read()
+                        print(telegram)
+                        collector.update(telegram)
                     except CRCException as error:
                         print(f"Error {error}")
 
-                    print(telegram)
-                    collector.update(telegram)
                     time.sleep(10)

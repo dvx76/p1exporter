@@ -25,8 +25,7 @@ if __name__ == "__main__":
         while True:
             try:
                 telegram = p1_reader.read()
+                logger.info(f"Got telegram with {len(telegram)} keys")
+                collector.update(telegram)
             except CRCException as error:
                 logger.warning(error)
-
-            logger.info(f"Got telegram with {len(telegram)} keys")
-            collector.update(telegram)
