@@ -1,9 +1,14 @@
+stages:
+  - build
+  - release
+
 image: python:latest
 
 before_script:
   - python --version
 
 build:
+  stage: build
   script:
     - python -m pip install --upgrade build
     - python -m build
@@ -11,3 +16,20 @@ build:
     paths:
       - dist/*.whl
     expire_in: 1 week
+
+release:
+  stage: release
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - pip install twine
+    - |
+      cat <<EOF > $HOME/.pypirc
+      [pypi]
+      username = __token__
+      password = ${PYPI_API_TOKEN}
+      EOF
+    - python3 -m twine upload --repository pypi dist/*
+  only:
+    - tags
+  
