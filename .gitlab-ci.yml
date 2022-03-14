@@ -29,7 +29,7 @@ release:
       username = __token__
       password = ${PYPI_API_TOKEN}
       EOF
-    - python3 -m twine upload --repository pypi dist/*
+    - python3 -m twine upload --verbose --repository pypi dist/*
   only:
     - tags
   
