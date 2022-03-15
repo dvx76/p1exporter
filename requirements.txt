@@ -4,3 +4,4 @@ prometheus-client==0.13.1
 pylint==2.12.2
 pyserial==3.5
 pytest==6.2.5
+pytest-cov==3.0.0

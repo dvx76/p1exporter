@@ -1,11 +1,22 @@
 stages:
+  - test
   - build
   - release
 
-image: python:latest
+image: python:3
 
-before_script:
-  - python --version
+test:
+  stage: test
+  script:
+    - export PYTHONPATH=$(pwd)
+    - pip install -r requirements.txt
+    - pytest --junitxml=report.xml
+  coverage: '/TOTAL.*\s+(\d+%)/'
+  artifacts:
+    when: always
+    reports:
+      junit: report.xml
+      cobertura: coverage.xml
 
 build:
   stage: build

@@ -2,3 +2,5 @@
 __pycache__/
 dist/
 p1exporter.egg-info/
+.coverage
+coverage.xml

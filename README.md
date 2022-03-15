@@ -32,9 +32,11 @@ p1_electricity_power_out_kw 0.0
 
 ## Todo
 
-- Run tests in CI
 - Configurable serial device
 - Configurable listen address:port
+- List all metrics in README
+- Tests for p1collector
+- LICENSE
 
 ## References:
 
