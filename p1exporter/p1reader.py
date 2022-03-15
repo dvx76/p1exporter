@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class CRCException(Exception):
-    """TODO"""
+    """Error calculating the checksum of a telegram"""
 
 
 class P1Reader:
