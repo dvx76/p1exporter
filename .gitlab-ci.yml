@@ -1,46 +1,40 @@
 stages:
-  - test
-  - build
+  - test-and-build
   - release
 
 image: python:3
 
-test:
-  stage: test
+test-and-build:
+  stage: test-and-build
   script:
-    - export PYTHONPATH=$(pwd)
-    - pip install -r requirements.txt
-    - pytest --junitxml=report.xml
+    - pip install poetry
+    - poetry install
+    - poetry run pytest --junitxml=report.xml
+    - poetry build
   coverage: '/TOTAL.*\s+(\d+%)/'
   artifacts:
     when: always
     reports:
       junit: report.xml
       cobertura: coverage.xml
-
-build:
-  stage: build
-  script:
-    - python -m pip install --upgrade build
-    - python -m build
-  artifacts:
     paths:
       - dist/*.whl
     expire_in: 1 week
+
 
 release:
   stage: release
   variables:
     GIT_STRATEGY: none
   script:
-    - pip install twine
+    - pip install poetry
     - |
       cat <<EOF > $HOME/.pypirc
       [pypi]
       username = __token__
       password = ${PYPI_API_TOKEN}
       EOF
-    - python3 -m twine upload --verbose --repository pypi dist/*
+    - poetry publish
   only:
     - tags
-  
+

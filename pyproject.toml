@@ -1,14 +1,30 @@
+[tool.poetry]
+authors = ["Fabrice Devaux <fabrice.devaux@gmail.com>"]
+description = "A reader and prometheus exporter for smart meters"
+license = "MIT"
+name = "p1exporter"
+version = "0.0.3"
+
+[tool.poetry.dependencies]
+crcmod = "1.7"
+prometheus-client = "0.13.1"
+pyserial = "3.5"
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+black = "21.12b0"
+pylint = "2.12.2"
+pytest = "6.2.5"
+pytest-cov = "3.0.0"
+
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel"
-]
-build-backend = "setuptools.build_meta"
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]
 
 [tool.pytest.ini_options]
 addopts = "-s --cov=p1exporter --cov-report xml --cov-report term"
 testpaths = ["tests"]
 
 [tool.pylint.'MESSAGES CONTROL']
-max-line-length = 100
 disable = ["fixme", "logging-fstring-interpolation"]
+max-line-length = 100
