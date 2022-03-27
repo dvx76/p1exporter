@@ -9,6 +9,7 @@ test-and-build:
   script:
     - pip install poetry
     - poetry install
+    - poetry run pre-commit run --all-files --show-diff-on-failure
     - poetry run pytest --junitxml=report.xml
     - poetry build
   coverage: '/TOTAL.*\s+(\d+%)/'
@@ -37,4 +38,3 @@ release:
     - poetry publish
   only:
     - tags
-
